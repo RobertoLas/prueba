@@ -5,6 +5,7 @@
 // var_dump($mdb);
 class Candidato extends Conexion
 {
+    
     private $id;
     private $nombreCompleto;
     public function setId($valor)
