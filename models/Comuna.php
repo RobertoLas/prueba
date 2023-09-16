@@ -45,10 +45,9 @@ class Comuna extends Conexion implements JsonSerializable
     {
 
         try {
-            $sql = 'SELECT comunas.id, comunas.comuna 
+            $sql = 'SELECT comunas.id, comunas.nombre 
             FROM comunas
-            INNER JOIN provincias ON (provincias.id = comunas.provincia_id)
-            INNER JOIN regiones ON (provincias.region_id = regiones.id)
+            INNER JOIN regiones ON (regiones.id = comunas.region_id)
             WHERE regiones.id = :codigoRegion';
             $stmt = $this->conexion_db->prepare($sql);
             $stmt->bindParam(':codigoRegion', $codigoRegion, PDO::PARAM_INT);
@@ -62,7 +61,7 @@ class Comuna extends Conexion implements JsonSerializable
             foreach ($resultados as $comuna) {
                 $oComuna = new Comuna();
                 $oComuna->setId($comuna['id']);
-                $oComuna->setNombre($comuna['comuna']);
+                $oComuna->setNombre($comuna['nombre']);
                 array_push($objetos, $oComuna);
 
             }

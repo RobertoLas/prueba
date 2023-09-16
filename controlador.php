@@ -18,7 +18,7 @@ if(isset($data)){
     $oVotante = new Votante();
     $oContactoVotacion = new ContactoVotacion();
     $votante = $oVotante->getVotante($data);
- 
+    
     if(count($votante)>0){
         echo "el votante  ya existe";
 

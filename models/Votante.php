@@ -18,9 +18,9 @@ class Votante extends Conexion
             
             $consulta = $this->conexion_db->query(
                 'INSERT INTO 
-                `votante`(`id`, `rut`, `nombre_completo`, `alias`, `email`, `region`, `comuna`) 
+                `votante`(`id`, `rut`, `nombre_completo`, `alias`, `email`, `comuna_id`) 
                 
-                VALUES ("",'."'".$datos->rut."'".','."'".$datos->nombre."'".','."'".$datos->alias."'".','."'".$datos->email."'".','.$datos->id_region.','.$datos->id_comuna.')'
+                VALUES ("",'."'".$datos->rut."'".','."'".$datos->nombre."'".','."'".$datos->alias."'".','."'".$datos->email."'".','.$datos->id_comuna.')'
             );
             $resultado = $consulta->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
@@ -37,19 +37,24 @@ class Votante extends Conexion
     public function getVotante($datos)
     {
         try {
-          
-            $consulta = $this->conexion_db->query(
-                'SELECT `id`, `rut`, `nombre_completo`, `alias`, `email`, `region`, `comuna` FROM `votante` WHERE rut = '."'".$datos->rut."'"
-            );
+            $sql = 'SELECT `id`, `rut`, `nombre_completo`, `alias`, `email` FROM `votante` WHERE rut = :rutIngresado';
+            $stmt = $this->conexion_db->prepare($sql);
+            $stmt->bindParam(':rutIngresado', $datos->rut, PDO::PARAM_INT);
+            $stmt->execute();   
+
+            // Obtener los resultados
+            $resultados = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            var_dump($resultados);
             
-            $resultado = $consulta->fetchAll(PDO::FETCH_ASSOC);
+
+
+
         } catch (PDOException $e) {
             echo 'Error de conexión: ' . $e->getMessage();
         }
 
 
-        // var_dump($resultado);
-        return ($resultado);
+        return ($resultados);
 
 
     }
